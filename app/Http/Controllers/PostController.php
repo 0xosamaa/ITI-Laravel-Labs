@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\TextUI\Configuration\Constant;
 
 class PostController extends Controller
@@ -64,8 +66,15 @@ class PostController extends Controller
 
     public function destroy(Request $request)
     {
-        $post = Post::findOrFail($request->post_id);
-        $post->delete();
+        DB::transaction(function () use ($request) {
+            $comments = Comment::where(['commentable_id' => $request->post_id, 'commentable_type' => 'App\Models\Post'])->get();
+            foreach ($comments as $comment) {
+                $comment->delete();
+            }
+            $post = Post::findOrFail($request->post_id);
+            $post->delete();
+        });
+
 
         return redirect()->route('posts.index');
     }
@@ -78,8 +87,14 @@ class PostController extends Controller
 
     public function restore($post)
     {
-        $post = Post::onlyTrashed()->findOrFail($post);
-        $post->restore();
+        DB::transaction(function () use ($post) {
+            $post = Post::onlyTrashed()->findOrFail($post);
+            $comments = Comment::onlyTrashed()->where(['commentable_id' => $post->id, 'commentable_type' => 'App\Models\Post'])->get();
+            $post->restore();
+            foreach ($comments as $comment) {
+                $comment->restore();
+            }
+        });
 
         return redirect()->route('posts.show', $post);
     }
