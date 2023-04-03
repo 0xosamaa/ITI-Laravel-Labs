@@ -2,39 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use PHPUnit\TextUI\Configuration\Constant;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $posts = [
-            [
-                'id' => 1,
-                'title' => 'Post 1',
-                'description' => 'Post 1 description',
-                'author' => 'Osama',
-                'published_at' => '2023-04-1',
-                'created_at' => '2023-04-1',
-            ],
-            [
-                'id' => 2,
-                'title' => 'Post 2',
-                'description' => 'Post 2 description',
-                'author' => 'Osama',
-                'published_at' => '2023-04-1',
-                'created_at' => '2023-04-1',
-            ],
-            [
-                'id' => 3,
-                'title' => 'Post 3',
-                'description' => 'Post 3 description',
-                'author' => 'Osama',
-                'published_at' => '2023-04-1',
-                'created_at' => '2023-04-1',
-            ],
-        ];
+        if (isset($request->search)) {
+            $posts = Post::where('title', 'like', '%' . $request->search . '%')
+                ->orWhere('description', 'like', '%' . $request->search . '%')->paginate(9);
+        } else {
+            $posts = Post::paginate(9);
+        }
         return view('posts.index', ['posts' => $posts]);
     }
 
@@ -43,46 +24,50 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        $post = new Post();
+
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->user_id = $request->author;
+
+        $post->save();
+
         return redirect()->route('posts.index');
     }
 
-    public function show()
+    public function show($post)
     {
-        $post = [
-            'id' => 1,
-            'title' => 'Post 1',
-            'description' => 'Post 1 description',
-            'author' => 'Osama',
-            'published_at' => '2023-04-1',
-            'created_at' => '2023-04-1',
-        ];
+        $post = Post::findOrFail($post);
 
         return view('posts.show', ["post" => $post]);
     }
 
-    public function edit()
+    public function edit($post)
     {
-        $post = [
-            'id' => 1,
-            'title' => 'Post 1',
-            'description' => 'Post 1 description',
-            'author' => 'Osama',
-            'published_at' => '2023-04-1',
-            'created_at' => '2023-04-1',
-        ];
+        $post = Post::findOrFail($post);
 
         return view('posts.edit', ["post" => $post]);
     }
 
-    public function update()
+    public function update(Request $request)
     {
-        return redirect()->route('posts.index');
+        $post = Post::findOrFail($request->post_id);
+
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->user_id = $request->author;
+
+        $post->save();
+        return redirect()->route('posts.show', $post->id);
     }
 
-    public function destroy()
+    public function destroy(Request $request)
     {
+        $post = Post::findOrFail($request->post_id);
+        $post->delete();
+
         return redirect()->route('posts.index');
     }
 }
