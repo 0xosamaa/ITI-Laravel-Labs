@@ -10,8 +10,8 @@
                 <div class="card">
                     <img src="{{ $post->image }}" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $post['title'] }}</h5>
-                        <p class="card-text">{{ Str::limit($post['description'], 50) }}</p>
+                        <h5 class="card-title">{{ $post->title }}</h5>
+                        <p class="card-text">{{ Str::limit($post->description, 50) }}</p>
                         <a href="{{ route('posts.show', $post['id']) }}" class="btn btn-primary">View Post</a>
                     </div>
                 </div>

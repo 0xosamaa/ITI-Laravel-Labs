@@ -23,11 +23,14 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item{{ request()->is('posts') ? ' active' : '' }}">
                     <a class="nav-link" href="{{ route('posts.index') }}">Posts</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item{{ request()->is('posts/create') ? ' active' : '' }}">
                     <a class="nav-link" href="{{ route('posts.create') }}">New Post</a>
+                </li>
+                <li class="nav-item{{ request()->is('posts/deleted') ? ' active' : '' }}">
+                    <a class="nav-link" href="{{ route('posts.deleted') }}">Deleted Posts</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" method="GET" action="{{ route('posts.index') }}">

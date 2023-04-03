@@ -70,4 +70,18 @@ class PostController extends Controller
 
         return redirect()->route('posts.index');
     }
+
+    public function deleted()
+    {
+        $posts = Post::onlyTrashed()->paginate(9);
+        return view('posts.deleted', ['posts' => $posts]);
+    }
+
+    public function restore($post)
+    {
+        $post = Post::onlyTrashed()->findOrFail($post);
+        $post->restore();
+
+        return redirect()->route('posts.show', $post);
+    }
 }
