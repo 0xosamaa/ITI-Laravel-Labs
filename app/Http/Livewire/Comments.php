@@ -23,7 +23,6 @@ class Comments extends Component
     public function addComment()
     {
         $comment = new Comment();
-
         $comment->body = $this->newComment;
         $comment->user_id = $this->user_id;
         $comment->commentable_id = $this->post_id;

@@ -34,10 +34,10 @@
         <div class="col-10">
             @if ($comments->isNotEmpty())
                 <h3>Comments</h3>
-                <livewire:comments :comments="$comments" :post_id="$post->id" :user_id="$post->user->id" />
             @else
                 <h4>Post has no comments yet.</h4>
             @endif
+            <livewire:comments :comments="$comments" :post_id="$post->id" :user_id="$post->user->id" />
         </div>
         <div class="col-1"></div>
     </div>
