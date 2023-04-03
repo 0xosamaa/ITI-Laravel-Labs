@@ -8,7 +8,7 @@
         @foreach ($posts as $post)
             <div class="col-4 my-3">
                 <div class="card">
-                    <img src="{{ $post->image }}" class="card-img-top" alt="...">
+                    <img src="{{ $post->image }}" class="card-img-top" alt="..." loading="lazy">
                     <div class="card-body">
                         <h5 class="card-title">{{ $post->title }}</h5>
                         <p class="card-text">{{ Str::limit($post->description, 50) }}</p>

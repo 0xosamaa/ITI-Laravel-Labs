@@ -40,7 +40,7 @@ class PostController extends Controller
     public function show($post)
     {
         $post = Post::findOrFail($post);
-        return view('posts.show', ["post" => $post]);
+        return view('posts.show', ["post" => $post, "comments" => $post->comments]);
     }
 
     public function edit($post)

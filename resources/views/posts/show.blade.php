@@ -10,7 +10,7 @@
             <h1>{{ $post->title }}</h1>
             <img src="{{ $post->image }}" class="img-fluid rounded-top" alt="">
             <p>{{ $post->description }}</p>
-            <small>Published at: {{ $post->published_at }}</small>
+            <small>Published: {{ $post->published_at }}</small>
             <br>
             <small> By: {{ $post->user->name }}</small>
             <br>
@@ -34,16 +34,9 @@
         <div class="col-1"></div>
 
         <div class="col-10">
-            @if ($post->comments->isNotEmpty())
+            @if ($comments->isNotEmpty())
                 <h3>Comments</h3>
-                @foreach ($post->comments as $comment)
-                    <div class="card text-white bg-info mb-3">
-                        <div class="card-header">{{ $comment->user->name }}</div>
-                        <div class="card-body">
-                            <p class="card-text">{{ $comment->body }}</p>
-                        </div>
-                    </div>
-                @endforeach
+                <livewire:comments :comments="$comments" :post_id="$post->id" :user_id="$post->user->id"/>
             @else
                 <h4>Post has no comments yet.</h4>
             @endif
@@ -52,7 +45,6 @@
 
 
     </div>
-
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">

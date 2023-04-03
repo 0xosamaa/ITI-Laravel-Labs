@@ -20,7 +20,7 @@ class Post extends Model
         return Attribute::make(
             get: function (string $value) {
                 $date = new Carbon($value);
-                return $date->isoFormat('dddd MMMM D YYYY');
+                return $date->diffForHumans();
             }
         );
     }
