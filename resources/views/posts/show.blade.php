@@ -4,21 +4,55 @@
 @endsection
 
 @section('content')
-    <h1>{{ $post->title }}</h1>
-    <img src="{{ $post->image }}" class="img-fluid rounded-top" alt="">
-    <p>{{ $post->description }}</p>
-    <small>Published at: {{ $post->published_at }}</small>
-    <br>
-    <small> By: {{ $post->user->name }}</small>
-    <br>
+    <div class="row my-3">
+        <div class="col-1"></div>
+        <div class="post col-10">
+            <h1>{{ $post->title }}</h1>
+            <img src="{{ $post->image }}" class="img-fluid rounded-top" alt="">
+            <p>{{ $post->description }}</p>
+            <small>Published at: {{ $post->published_at }}</small>
+            <br>
+            <small> By: {{ $post->user->name }}</small>
+            <br>
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <div class="row my-3">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning">Edit Post</a>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                Delete Post
+            </button>
+        </div>
+        <div class="col-1"></div>
 
-    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning">Edit Post</a>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-        Delete Post
-    </button>
-
+    </div>
     <!-- Modal -->
+    <div class="row my-3">
+        <div class="col-1"></div>
+
+        <div class="col-10">
+            @if ($post->comments->isNotEmpty())
+                <h3>Comments</h3>
+                @foreach ($post->comments as $comment)
+                    <div class="card text-white bg-info mb-3">
+                        <div class="card-header">{{ $comment->user->name }}</div>
+                        <div class="card-body">
+                            <p class="card-text">{{ $comment->body }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <h4>Post has no comments yet.</h4>
+            @endif
+        </div>
+        <div class="col-1"></div>
+
+
+    </div>
+
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
