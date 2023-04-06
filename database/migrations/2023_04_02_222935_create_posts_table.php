@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->string('image')->default('https://via.placeholder.com/640x480.png/000000?text=animals+nostrum');
+            $table->string('image')->default('https://picsum.photos/600');
             $table->foreignId('user_id')->constrained('users');
             $table->date('published_at')->default(Carbon::today());
             $table->timestamps();
