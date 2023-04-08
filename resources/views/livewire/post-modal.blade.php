@@ -16,7 +16,7 @@
                 </div>
                 <div class="modal-body">
                     <h3>{{ $post->title }}</h3>
-                    <img src="{{ $post->image }}" class="img-fluid rounded-top" alt="">
+                    <img src="{{ asset('storage/images/posts/' . $post->image) }}" class="img-fluid rounded-top" alt="">
                     <p>
                         {{ Str::limit($post->description, 50) }}
                     </p>

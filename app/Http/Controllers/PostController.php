@@ -8,6 +8,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use PHPUnit\TextUI\Configuration\Constant;
 
 class PostController extends Controller
@@ -31,14 +32,15 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $input = $request->only(['title', 'description']);
+        $imageName = time() . '.' . $request->image->extension();
+        $request->image->move(storage_path('app/public/images/posts'), $imageName);
+
         $post = new Post();
-
         $post->title = $input['title'];
+        $post->image = $imageName;
         $post->description = $input['description'];
-        // $post->user_id = $request->author;
         $post->user_id = Auth::user()->id;
-
-
+        // $post->user_id = $request->author;
         $post->save();
 
         return redirect()->route('posts.index');

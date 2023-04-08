@@ -22,7 +22,7 @@ class PostFactory extends Factory
         return [
             'title' => fake()->text(50),
             'description' => fake()->text(2000),
-            'image' => 'https://picsum.photos/600',
+            'image' => 'post.jpeg',
             'user_id' => $users->random(),
             'published_at' => Carbon::today()->subDays(rand(0, 365))
         ];

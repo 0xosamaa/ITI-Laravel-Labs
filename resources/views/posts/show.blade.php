@@ -8,7 +8,7 @@
         <div class="col-1"></div>
         <div class="post col-10">
             <h1>{{ $post->title }}</h1>
-            <img src="{{ $post->image }}" class="img-fluid rounded-top" alt="">
+            <img src="{{ asset('storage/images/posts/' . $post->image) }}" class="img-fluid rounded-top" alt="">
             <p>{{ $post->description }}</p>
             <small>Published: {{ $post->published_at }}</small>
             <br>
