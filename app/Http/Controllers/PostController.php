@@ -6,6 +6,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\TextUI\Configuration\Constant;
 
@@ -14,10 +15,10 @@ class PostController extends Controller
     public function index(Request $request)
     {
         if (isset($request->search)) {
-            $posts = Post::where('title', 'like', '%' . $request->search . '%')
+            $posts = Post::where('user_id', Auth::user()->id)->where('title', 'like', '%' . $request->search . '%')
                 ->orWhere('description', 'like', '%' . $request->search . '%')->orderBy('published_at', 'DESC')->paginate(9);
         } else {
-            $posts = Post::orderBy('published_at', 'DESC')->paginate(9);
+            $posts = Post::where('user_id', Auth::user()->id)->orderBy('published_at', 'DESC')->paginate(9);
         }
         return view('posts.index', ['posts' => $posts]);
     }
@@ -29,11 +30,14 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
+        $input = $request->only(['title', 'description']);
         $post = new Post();
 
-        $post->title = $request->title;
-        $post->description = $request->description;
-        $post->user_id = $request->author;
+        $post->title = $input['title'];
+        $post->description = $input['description'];
+        // $post->user_id = $request->author;
+        $post->user_id = Auth::user()->id;
+
 
         $post->save();
 
@@ -42,7 +46,7 @@ class PostController extends Controller
 
     public function show($post)
     {
-        $post = Post::findOrFail($post);
+        $post = Post::where('slug', $post)->firstOrFail();
         return view('posts.show', ["post" => $post, "comments" => $post->comments]);
     }
 
@@ -82,14 +86,14 @@ class PostController extends Controller
 
     public function deleted()
     {
-        $posts = Post::onlyTrashed()->paginate(9);
+        $posts = Post::where('user_id', Auth::user()->id)->onlyTrashed()->paginate(9);
         return view('posts.deleted', ['posts' => $posts]);
     }
 
     public function restore($post)
     {
         DB::transaction(function () use ($post) {
-            $post = Post::onlyTrashed()->findOrFail($post);
+            $post = Post::where('user_id', Auth::user()->id)->onlyTrashed()->findOrFail($post);
             $comments = Comment::onlyTrashed()->where(['commentable_id' => $post->id, 'commentable_type' => 'App\Models\Post'])->get();
             $post->restore();
             foreach ($comments as $comment) {

@@ -24,7 +24,7 @@ class StorePostRequest extends FormRequest
         return [
             "title" => "required|unique:posts|min:3",
             "description" => "required|min:10",
-            "author" => "required|exists:users,id"
+            // "author" => "required|exists:users,id"
         ];
     }
 

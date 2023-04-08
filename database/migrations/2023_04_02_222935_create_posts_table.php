@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('slug');
             $table->text('description');
             $table->string('image')->default('https://picsum.photos/600');
             $table->foreignId('user_id')->constrained('users');

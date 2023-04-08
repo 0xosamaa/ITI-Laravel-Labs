@@ -24,7 +24,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <a href="{{ route('posts.show', $post['id']) }}" class="btn btn-primary">View Full Post</a>
+                    <a href="{{ route('posts.show', $post['slug']) }}" class="btn btn-primary">View Full Post</a>
                 </div>
             </div>
         </div>

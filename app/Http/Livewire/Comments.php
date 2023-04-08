@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Comments extends Component
@@ -16,7 +17,7 @@ class Comments extends Component
     {
         $this->comments = $comments;
         $this->post_id = $post_id;
-        $this->user_id = $user_id;
+        $this->user_id = Auth::user()->id;
     }
 
 

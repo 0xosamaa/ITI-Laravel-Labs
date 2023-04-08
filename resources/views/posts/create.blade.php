@@ -27,14 +27,14 @@
             </div>
             <small class="form-text text-muted">Enter Post Description</small>
         </div>
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <label for="" class="form-label">Author</label>
             <select class="form-select form-select-lg" name="author" id="">
                 @foreach (\App\Models\User::all() as $user)
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                 @endforeach
             </select>
-        </div>
+        </div> --}}
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 @endsection

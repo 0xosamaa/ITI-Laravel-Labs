@@ -5,7 +5,8 @@
 
 @section('content')
     <div class="row my-3">
-        @foreach ($posts as $post)
+
+        @forelse ($posts as $post)
             <div class="col-4 my-3">
                 <div class="card">
                     <img src="{{ $post->image }}" class="card-img-top" alt="..." loading="lazy">
@@ -17,7 +18,9 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <h2>You haven't posted yet.</h2>
+        @endforelse
     </div>
     <div class="d-flex justify-content-center my-3">
         {{ $posts->appends(request()->input())->links() }}
