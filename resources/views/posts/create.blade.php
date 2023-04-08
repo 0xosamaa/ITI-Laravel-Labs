@@ -4,6 +4,14 @@
 @endsection
 
 @section('content')
+    <div class="mt-4"></div>
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            <div class="alert alert-danger">
+                <p>{{ $error }}</p>
+            </div>
+        @endforeach
+    @endif
     <form action="{{ route('posts.store') }}" method="POST">
         @csrf
         <div class="mb-3">

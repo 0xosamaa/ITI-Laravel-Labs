@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('image')->default('https://picsum.photos/600');
             $table->foreignId('user_id')->constrained('users');
-            $table->date('published_at')->default(Carbon::today());
+            $table->dateTime('published_at')->default(Carbon::now());
             $table->timestamps();
             $table->softDeletes();
         });

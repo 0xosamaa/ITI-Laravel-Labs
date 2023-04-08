@@ -12,7 +12,8 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $post->title }}</h5>
                         <p class="card-text">{{ Str::limit($post->description, 50) }}</p>
-                        <livewire:post-modal :post="$post"/>
+                        <small>Published: {{ $post->published_at }}</small>
+                        <livewire:post-modal :post="$post" />
                     </div>
                 </div>
             </div>

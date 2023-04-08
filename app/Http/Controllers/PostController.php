@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Http\Request;
@@ -14,9 +15,9 @@ class PostController extends Controller
     {
         if (isset($request->search)) {
             $posts = Post::where('title', 'like', '%' . $request->search . '%')
-                ->orWhere('description', 'like', '%' . $request->search . '%')->paginate(9);
+                ->orWhere('description', 'like', '%' . $request->search . '%')->orderBy('published_at', 'DESC')->paginate(9);
         } else {
-            $posts = Post::paginate(9);
+            $posts = Post::orderBy('published_at', 'DESC')->paginate(9);
         }
         return view('posts.index', ['posts' => $posts]);
     }
@@ -26,7 +27,7 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
         $post = new Post();
 
