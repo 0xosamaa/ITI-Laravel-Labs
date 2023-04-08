@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use App\Http\Requests\StorePostRequest;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\TextUI\Configuration\Constant;
 
@@ -62,13 +63,17 @@ class PostController extends Controller
     public function update(Request $request)
     {
         $post = Post::findOrFail($request->post_id);
+        File::delete(storage_path("images/posts/{$post->image}"));
+
+        $imageName = time() . '.' . $request->image->extension();
+        $request->image->move(storage_path('app/public/images/posts'), $imageName);
 
         $post->title = $request->title;
         $post->description = $request->description;
-        $post->user_id = $request->author;
-
+        $post->user_id = Auth::user()->id;
+        $post->image = $imageName;
         $post->save();
-        return redirect()->route('posts.show', $post->id);
+        return redirect()->route('posts.show', $post->slug);
     }
 
     public function destroy(Request $request)

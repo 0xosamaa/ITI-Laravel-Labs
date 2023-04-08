@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('posts.update', $post['id']) }}" method="POST">
+    <form action="{{ route('posts.update', $post['slug']) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
         <div class="mb-3">
@@ -31,6 +31,12 @@
                     @endif
                 @endforeach
             </select>
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Image</label>
+            <input type="file" name="image" class="form-control">
+            <img class="my-3" src="{{ asset('storage/images/posts/' . $post->image) }}" width="128" alt="">
+            <small class="form-text text-muted">Choose Post Image</small>
         </div>
         <input type="hidden" name="post_id" value="{{ $post->id }}">
         <button type="submit" class="btn btn-primary">Submit</button>
