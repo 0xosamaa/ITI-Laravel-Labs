@@ -63,8 +63,9 @@ class PostController extends Controller
     public function update(Request $request)
     {
         $post = Post::findOrFail($request->post_id);
-        File::delete(storage_path("images/posts/{$post->image}"));
-
+        if (Storage::exists("public/images/posts/{$post->image}")) {
+            Storage::delete("public/images/posts/{$post->image}");
+        }
         $imageName = time() . '.' . $request->image->extension();
         $request->image->move(storage_path('app/public/images/posts'), $imageName);
 
