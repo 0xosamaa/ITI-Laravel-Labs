@@ -24,7 +24,7 @@ class PostFactory extends Factory
             'description' => fake()->text(2000),
             'image' => 'post.jpeg',
             'user_id' => $users->random(),
-            'published_at' => Carbon::today()->subDays(rand(0, 365))
+            'published_at' => Carbon::today()->subDays(rand(0, 1_460))
         ];
     }
 }
