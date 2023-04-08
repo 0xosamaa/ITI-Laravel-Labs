@@ -47,13 +47,15 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
+                        <li>
+                            <form class="form-inline my-2 my-lg-0" method="GET" action="{{ route('posts.index') }}">
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search"
+                                    aria-label="Search" name="search">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                            </form>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))

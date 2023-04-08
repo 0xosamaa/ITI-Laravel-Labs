@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\MaxThreePosts;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePostRequest extends FormRequest
@@ -25,6 +26,7 @@ class StorePostRequest extends FormRequest
             "title" => "required|unique:posts|min:3",
             "description" => "required|min:10",
             "image" => "required|image|mimes:jpg,jpeg,png|max:2048",
+            new MaxThreePosts
             // "author" => "required|exists:users,id"
         ];
     }

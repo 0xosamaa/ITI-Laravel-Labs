@@ -7,10 +7,8 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Support\Facades\Storage;
-use PHPUnit\TextUI\Configuration\Constant;
 
 class PostController extends Controller
 {
@@ -18,7 +16,7 @@ class PostController extends Controller
     {
         if (isset($request->search)) {
             $posts = Post::where('user_id', Auth::user()->id)->where('title', 'like', '%' . $request->search . '%')
-                ->orWhere('description', 'like', '%' . $request->search . '%')->orderBy('published_at', 'DESC')->paginate(9);
+                ->orWhere('description', 'like', '%' . $request->search . '%')->where('user_id', Auth::user()->id)->orderBy('published_at', 'DESC')->paginate(9);
         } else {
             $posts = Post::where('user_id', Auth::user()->id)->orderBy('published_at', 'DESC')->paginate(9);
         }
@@ -101,7 +99,7 @@ class PostController extends Controller
     public function restore($post)
     {
         DB::transaction(function () use ($post) {
-            $post = Post::where('user_id', Auth::user()->id)->onlyTrashed()->findOrFail($post);
+            $post = Post::where('user_id', Auth::user()->id)->onlyTrashed()->where('slug', $post)->firstOrFail();
             $comments = Comment::onlyTrashed()->where(['commentable_id' => $post->id, 'commentable_type' => 'App\Models\Post'])->get();
             $post->restore();
             foreach ($comments as $comment) {

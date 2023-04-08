@@ -9,11 +9,11 @@
             @foreach ($posts as $post)
                 <div class="col-4 my-3">
                     <div class="card">
-                        <img src="{{ $post->image }}" class="card-img-top" alt="...">
+                        <img src="{{ asset('storage/images/posts/' . $post->image) }}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{ $post->title }}</h5>
                             <p class="card-text">{{ Str::limit($post->description, 50) }}</p>
-                            <form action="{{ route('posts.restore', $post->id) }}" method="POST">
+                            <form action="{{ route('posts.restore', $post['slug']) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-warning">Restore Post</button>
                             </form>
