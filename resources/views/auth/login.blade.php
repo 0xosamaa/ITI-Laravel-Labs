@@ -56,7 +56,12 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
-
+                                <a href="{{ route('login.github') }}" class="btn btn-dark">
+                                    {{ __('Login With Github') }}
+                                </a>
+                                <a href="{{ route('login.google') }}" class="btn btn-danger">
+                                    {{ __('Login With Google') }}
+                                </a>
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}

@@ -15,10 +15,10 @@ class PostController extends Controller
     public function index(Request $request)
     {
         if (isset($request->search)) {
-            $posts = Post::where('user_id', Auth::user()->id)->where('title', 'like', '%' . $request->search . '%')
+            $posts = Post::with('user')->where('user_id', Auth::user()->id)->where('title', 'like', '%' . $request->search . '%')
                 ->orWhere('description', 'like', '%' . $request->search . '%')->where('user_id', Auth::user()->id)->orderBy('published_at', 'DESC')->paginate(9);
         } else {
-            $posts = Post::where('user_id', Auth::user()->id)->orderBy('published_at', 'DESC')->paginate(9);
+            $posts = Post::with('user')->where('user_id', Auth::user()->id)->orderBy('published_at', 'DESC')->paginate(9);
         }
         return view('posts.index', ['posts' => $posts]);
     }
@@ -82,7 +82,7 @@ class PostController extends Controller
             foreach ($comments as $comment) {
                 $comment->delete();
             }
-            $post = Post::findOrFail($request->post_id);
+            $post = Post::where('user_id', Auth::user()->id)->findOrFail($request->post_id);
             $post->delete();
         });
 

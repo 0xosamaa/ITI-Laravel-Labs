@@ -1,8 +1,10 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Resources\Json\ResourceResponse;
 
 /*
@@ -29,6 +31,45 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/posts/{post:slug}/restore', [PostController::class, 'restore'])->name('posts.restore');
     Route::patch('/posts/{post:slug}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post:slug})', [PostController::class, 'destroy'])->name('posts.destroy');
+});
+
+
+
+Route::get('github/auth/redirect', function () {
+    return Socialite::driver('github')->redirect();
+})->name('login.github');
+
+Route::get('github/auth/callback', function () {
+    $githubUser = Socialite::driver('github')->user();
+    $user = User::updateOrCreate([
+        'github_id' => $githubUser->id,
+    ], [
+        'name' => $githubUser->name,
+        'email' => $githubUser->email,
+    ]);
+
+    Auth::login($user);
+
+    return redirect('/');
+});
+
+
+Route::get('google/auth/redirect', function () {
+    return Socialite::driver('google')->redirect();
+})->name('login.google');
+
+Route::get('google/auth/callback', function () {
+    $googleUser = Socialite::driver('google')->user();
+    $user = User::updateOrCreate([
+        'google_id' => $googleUser->id,
+    ], [
+        'name' => $googleUser->name,
+        'email' => $googleUser->email,
+    ]);
+
+    Auth::login($user);
+
+    return redirect('/');
 });
 
 // Route::resource('posts', [PostController::class]);
